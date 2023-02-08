@@ -9,7 +9,6 @@ module Mastermind
     def play
       puts 'Welcome to the Mastermind game!'
       generate_code(hidden_code)
-      p hidden_code
       until attempts > 12
         print "\n"
         puts "Attempt ##{attempts}"
@@ -52,7 +51,7 @@ module Mastermind
           hints += '● '
         end
       end
-      guess.select.with_index { |_, idx| !correct_pos[idx] } & code.select.with_index { |_, idx| !correct_pos[idx] }).each { |_| hints += '○ ' }
+      (guess.select.with_index { |_, idx| !correct_pos[idx] } & code.select.with_index { |_, idx| !correct_pos[idx] }).each { |_| hints += '○ ' }
       puts hints
     end
   end
