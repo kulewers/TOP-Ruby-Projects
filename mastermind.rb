@@ -9,6 +9,7 @@ module Mastermind
     def play
       puts 'Welcome to the Mastermind game!'
       generate_code(hidden_code)
+      p hidden_code
       until attempts > 12
         print "\n"
         puts "Attempt ##{attempts}"
@@ -34,9 +35,9 @@ module Mastermind
       loop do
         guess = gets.chomp.split('').map(&:to_i)
         unless guess.length == 4
-          guess = []
+          guess = Array.new(4, 0)
         end
-        if guess.length == 4 && guess.all? { |digit| digit.between?(1, 6)}
+        if guess.all? { |digit| digit.between?(1, 6)}
           break
         end
       end
@@ -44,18 +45,14 @@ module Mastermind
     end
 
     def display_hints(code, guess)
-      correct_pos = code.map.with_index { |digit, idx| guess[idx] == digit}
+      correct_pos = code.map.with_index { |digit, idx| guess[idx] == digit }
       hints = 'Hints: '
       correct_pos.each do |bool|
-        if bool == true
+        if bool
           hints += '● '
         end
       end
-      guess.select.with_index { |_, idx| !correct_pos[idx] }.each do |val|
-        if code.select.with_index { |_, idx| !correct_pos[idx] }.include?(val)
-          hints += '○ '
-        end
-      end
+      guess.select.with_index { |_, idx| !correct_pos[idx] } & code.select.with_index { |_, idx| !correct_pos[idx] }).each { |_| hints += '○ ' }
       puts hints
     end
   end
@@ -83,3 +80,5 @@ Game.new.play
 # code.select.with_index { |_, idx| !correct_pos[idx] }.each do |val|
 #   if guess.select.with_index { |_, idx| !correct_pos[idx] }.include?(val)
 #     output += '○ '
+
+# 
